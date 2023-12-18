@@ -12,7 +12,6 @@ const CheckOut = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-
   const handleCheckout = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -27,15 +26,16 @@ const CheckOut = () => {
       date,
       title,
       service_id: _id,
-      price
-    }
+      price,
+    };
 
     console.log(order);
-    axios.post("http://localhost:3000/orders", order)
-      .then(res => {
+    axios
+      .post("https://car-doctor-server-one-virid.vercel.app/orders", order)
+      .then((res) => {
         console.log(res.data);
         if (res.data.acknowledged) {
-          toast.success('Order confirm!', {
+          toast.success("Order confirm!", {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -45,14 +45,12 @@ const CheckOut = () => {
             progress: undefined,
             theme: "colored",
           });
-          navigate(location?.state ? location?.state : "/")
+          navigate(location?.state ? location?.state : "/");
         }
-    })
+      });
     // console.log(name, date, email, price);
+  };
 
-  }
-
-  
   return (
     <div className="mt-6">
       <SharedBanner></SharedBanner>
@@ -77,14 +75,20 @@ const CheckOut = () => {
               <label className="label">
                 <span className="label-text">Date</span>
               </label>
-              <input type="date" name="date" className="input input-bordered" required />
+              <input
+                type="date"
+                name="date"
+                className="input input-bordered"
+                required
+              />
             </div>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
               </label>
               <input
-                type="email" name="email"
+                type="email"
+                name="email"
                 defaultValue={user ? user?.email : ""}
                 className="input input-bordered"
                 required

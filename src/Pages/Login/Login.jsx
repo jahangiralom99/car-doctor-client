@@ -8,7 +8,7 @@ import axios from "axios";
 import useAuth from "../../Hookes/useAuth";
 
 const Login = () => {
-  const {loginUser } =useAuth()
+  const { loginUser } = useAuth();
   // const { } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
@@ -35,14 +35,16 @@ const Login = () => {
         });
         // get Access Token
         const user = { email };
-        axios.post('http://localhost:3000/jwt', user, {withCredentials: true})
-          .then(res => {
+        axios
+          .post("https://car-doctor-server-one-virid.vercel.app/jwt", user, {
+            withCredentials: true,
+          })
+          .then((res) => {
             console.log(res.data);
             if (res.data.success) {
               navigate(location?.state ? location.state : "/");
             }
-        })
-       
+          });
       })
       .catch((err) => {
         const message = err.code;

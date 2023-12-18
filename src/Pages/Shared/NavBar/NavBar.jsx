@@ -6,17 +6,24 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 const NavBar = () => {
-  const { user ,logOut} = useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
 
-  const loggerEmail = {email: user?.email}
+  const loggerEmail = { email: user?.email };
   const handleLogOut = () => {
     logOut()
       .then(() => {
-        axios.post('http://localhost:3000/logout', loggerEmail,{ withCredentials: true, })
-          .then(res => {
-          console.log(res.data);
-        })
-        toast.info('user logged out successfully!', {
+        axios
+          .post(
+            "https://car-doctor-server-one-virid.vercel.app/logout",
+            loggerEmail,
+            {
+              withCredentials: true,
+            }
+          )
+          .then((res) => {
+            console.log(res.data);
+          });
+        toast.info("user logged out successfully!", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -25,12 +32,12 @@ const NavBar = () => {
           draggable: true,
           progress: undefined,
           theme: "colored",
-          });
+        });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
-      })
-  }
+      });
+  };
 
   const navBarALl = (
     <>
@@ -128,7 +135,12 @@ const NavBar = () => {
                 <li>
                   <a>Settings</a>
                 </li>
-                <button onClick={handleLogOut} className="btn btn-outline  text-red-500">logOut</button>
+                <button
+                  onClick={handleLogOut}
+                  className="btn btn-outline  text-red-500"
+                >
+                  logOut
+                </button>
               </ul>
             </div>
           ) : (

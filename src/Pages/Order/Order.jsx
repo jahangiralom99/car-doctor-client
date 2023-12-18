@@ -8,18 +8,17 @@ import useAxiosSecure from "../../Hookes/useAxiosSecure";
 const Order = () => {
   const { user } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
-  const axiosSecure = useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
-    // axios.get(`http://localhost:3000/orders?email=${user.email}`, {withCredentials: true})
+    // axios.get(`https://car-doctor-server-one-virid.vercel.app/orders?email=${user.email}`, {withCredentials: true})
     //   .then(res => {
     //     setOrders(res.data)
     //   })
-    axiosSecure.get(`/orders?email=${user.email}`)
-    .then(res => setOrders(res.data))
- 
+    axiosSecure
+      .get(`/orders?email=${user.email}`)
+      .then((res) => setOrders(res.data));
   }, [user, axiosSecure]);
-
 
   const handleDelete = (id) => {
     console.log(id);
@@ -33,38 +32,40 @@ const Order = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-          axios.delete(`http://localhost:3000/orders/${id}`)
-              .then(data => {
-                //   console.log(data);
-                  if (data.data.deletedCount > 0) {
-                    Swal.fire({
-                        title: "Deleted!",
-                        text: "Your file has been deleted.",
-                        icon: "success",
-                    });
-                      const remaining = orders.filter(order => order._id !== id);
-                      setOrders(remaining)
-                  }
-          })
-       
+        axios
+          .delete(`https://car-doctor-server-one-virid.vercel.app/orders/${id}`)
+          .then((data) => {
+            //   console.log(data);
+            if (data.data.deletedCount > 0) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success",
+              });
+              const remaining = orders.filter((order) => order._id !== id);
+              setOrders(remaining);
+            }
+          });
       }
     });
-    };
-    
+  };
 
-    const handleUpdateOrder = (id) => {
-        axios.patch(`http://localhost:3000/orders/${id}`, { status: "confirm" })
-            .then(res => {
-                console.log(res.data);
-                if (res.data.deletedCount > 0) {
-                    const remaining = orders.filter(order => order._id !== id);
-                    const updated = orders.find(order => order._id === id);
-                    updated.status = "Confirm";
-                    const newOrder = [updated, ...remaining];
-                    setOrders(newOrder);
-            }
-        })
-    }
+  const handleUpdateOrder = (id) => {
+    axios
+      .patch(`https://car-doctor-server-one-virid.vercel.app/orders/${id}`, {
+        status: "confirm",
+      })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.deletedCount > 0) {
+          const remaining = orders.filter((order) => order._id !== id);
+          const updated = orders.find((order) => order._id === id);
+          updated.status = "Confirm";
+          const newOrder = [updated, ...remaining];
+          setOrders(newOrder);
+        }
+      });
+  };
 
   return (
     <div>
@@ -91,8 +92,8 @@ const Order = () => {
               <AllOrder
                 key={order._id}
                 order={order}
-                    handleDelete={handleDelete}
-                    handleUpdateOrder= {handleUpdateOrder}
+                handleDelete={handleDelete}
+                handleUpdateOrder={handleUpdateOrder}
               ></AllOrder>
             ))}
           </tbody>
